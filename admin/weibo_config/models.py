@@ -30,6 +30,7 @@ class LoginInFo(models.Model):
         app_label = 'weibo_config'
 
 
+# is_crawled，other_crawled，home_crawled -1表示由转发/评论/粉丝/关注/点赞信息任务爬取的用户种子信息，默认不采集
 class Seeds(models.Model):
     uid = models.CharField('用户ID', max_length=20, unique=True, blank=False)
     is_crawled = models.IntegerField('是否已采集个人信息', default=0)

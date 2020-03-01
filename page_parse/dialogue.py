@@ -20,7 +20,7 @@ def get_comment_id(html, wb_id):
     if not cont:
         return list()
 
-    soup = BeautifulSoup(cont, 'lxml')
+    soup = BeautifulSoup(cont, 'html.parser')
     comment_ids = list()
     comments = soup.find(attrs={'node-type': 'comment_list'}).find_all(attrs={'class': 'list_li S_line1 clearfix'})
 
@@ -43,7 +43,7 @@ def get_dialogue(html, wb_id, cid):
     :return:
     """
     cont = get_html_cont(html)
-    soup = BeautifulSoup(cont, 'lxml')
+    soup = BeautifulSoup(cont, 'html.parser')
     dialogue_list = []
     dialogues = soup.find_all(attrs={'class': 'WB_text'})
     if len(dialogues) < 2:

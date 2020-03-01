@@ -35,7 +35,7 @@ def crawl_praise_page(mid):
     WbDataOper.set_weibo_praise_crawled(mid)
 
     if not ext_param:
-        crawler.error('fail to get praise page 2 ext_param, mid is {mid}'.format(mid=mid))
+        crawler.warning('fail to get praise page 2 ext_param, mid is {mid}'.format(mid=mid))
         return
 
     # why no app.send_task and fall back to sequential execution

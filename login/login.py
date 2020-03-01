@@ -20,9 +20,9 @@ from config import (
     get_code_username, get_code_password)
 from logger import (
     crawler, other)
+from utils.path import get_project_root
 
-
-VERIFY_CODE_PATH = './{}{}.png'
+VERIFY_CODE_PATH = get_project_root() + '/{}{}.png'
 
 YUMDAMA_USERNAME = os.getenv('YUMDAMA_ACCOUNT') or get_code_username()
 YUMDAMA_PASSWORD = os.getenv('YUMDAMA_PASS') or get_code_password()

@@ -1,15 +1,34 @@
 import os
 import random
 from pathlib import Path
-
-from yaml import load
-
+import re
+import yaml
 config_path = os.path.join(os.path.dirname(__file__), 'spider.yaml')
+
+path_matcher = re.compile(r'\$\{([^}^{]+)\}')
+
+
+def path_constructor(loader, node):
+    """ Extract the matched value, expand env variable, and replace the match """
+    value = node.value
+    match = path_matcher.match(value)
+    env_key_value_pair = match.group()[2:-1].split(',')
+    if len(env_key_value_pair) == 2:
+        env_val = os.environ.get(env_key_value_pair[0].strip(), env_key_value_pair[1].strip())
+    else:
+        env_val = os.environ.get(env_key_value_pair[0].strip())
+    if env_val.isdigit():
+        return int(env_val)
+    return env_val
+
+
+yaml.add_implicit_resolver('!path', path_matcher)
+yaml.add_constructor('!path', path_constructor)
 
 with open(config_path, encoding='utf-8') as f:
     cont = f.read()
 
-cf = load(cont)
+cf = yaml.load(cont)
 
 
 def get_db_args():
@@ -125,5 +144,10 @@ def get_images_type():
 def get_time_after():
     return cf.get('time_after')
 
+
 def get_samefollow_uid():
     return cf.get('samefollow_uid')
+
+
+def get_search_args():
+    return cf.get("search")

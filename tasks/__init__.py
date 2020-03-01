@@ -6,3 +6,4 @@ from .search import execute_search_task
 from .user import execute_user_task
 from .dialogue import execute_dialogue_task
 from .praise import execute_praise_task
+from .relation import execute_relation_task

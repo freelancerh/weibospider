@@ -6,7 +6,7 @@ from logger import parser
 from db.models import WeiboRepost
 from db.redis_db import IdNames
 from decorators import parse_decorator
-
+from page_get import get_profile
 
 REPOST_URL = 'http://weibo.com{}'
 
@@ -56,6 +56,7 @@ def get_repost_list(html, mid):
             wb_repost.weibo_id = repost['mid']
             # TODO 将wb_repost.user_id加入待爬队列（seed_ids）
             wb_repost.user_id = repost.find(attrs={'class': 'WB_face W_fl'}).find('a').get('usercard')[3:]
+            get_profile(wb_repost.user_id)
             wb_repost.user_name = repost.find(attrs={'class': 'list_con'}).find(attrs={'class': 'WB_text'}).find('a').\
                 text
             wb_repost.repost_time = repost.find(attrs={'class': 'WB_from S_txt2'}).find('a').get('title')

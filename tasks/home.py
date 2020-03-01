@@ -119,6 +119,7 @@ def execute_home_task():
     # you can have many strategies to crawl user's home page, here we choose table seed_ids's uid
     # whose home_crawl is 0
     id_objs = SeedidsOper.get_home_ids()
+
     for id_obj in id_objs:
         app.send_task('tasks.home.crawl_weibo_datas', args=(id_obj.uid,), queue='home_crawler',
                       routing_key='home_info')

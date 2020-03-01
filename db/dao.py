@@ -82,6 +82,14 @@ class SeedidsOper:
         return db_session.query(SeedIds.uid).filter(text('is_crawled=0')).all()
 
     @classmethod
+    def get_other_ids(cls):
+        """
+        Get all user id who's relation pages need to be crawled
+        :return: user ids
+        """
+        return db_session.query(SeedIds.uid).filter(text('other_crawled=0')).all()
+
+    @classmethod
     def get_home_ids(cls):
         """
         Get all user id who's home pages need to be crawled
@@ -99,12 +107,13 @@ class SeedidsOper:
         """
         seed = db_session.query(SeedIds).filter(SeedIds.uid == uid).first()
 
-        if seed and seed.is_crawled == 0:
-            seed.is_crawled = result
-        else:
-            seed = SeedIds(uid=uid, is_crawled=result)
+        if not seed:
+            seed = SeedIds(uid=uid, is_crawled=result, other_crawled=-1, home_crawled=-1)
             db_session.add(seed)
+        elif seed and seed.is_crawled == 0:
+            seed.is_crawled = result
         db_session.commit()
+
 
     @classmethod
     def get_seed_by_id(cls, uid):

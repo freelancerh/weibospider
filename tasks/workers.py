@@ -16,7 +16,7 @@ beat_log_path = os.path.join(os.path.dirname(os.path.dirname(__file__)) + '/logs
 broker_and_backend = get_broker_and_backend()
 
 tasks = [
-    'tasks.login', 'tasks.user', 'tasks.search', 'tasks.home', 'tasks.comment',
+    'tasks.login', 'tasks.user', 'tasks.relation', 'tasks.search', 'tasks.home', 'tasks.comment',
     'tasks.repost', 'tasks.downloader', 'tasks.praise'
 ]
 
@@ -49,6 +49,11 @@ app.conf.update(
             'schedule': timedelta(minutes=3),
             'options': {'queue': 'user_crawler', 'routing_key': 'for_user_info'}
         },
+        'relation_task': {
+            'task': 'tasks.user.execute_relation_task',
+            'schedule': timedelta(minutes=3),
+            'options': {'queue': 'relation_crawler', 'routing_key': 'for_relation_info'}
+        },
         'search_task': {
             'task': 'tasks.search.execute_search_task',
             'schedule': timedelta(hours=2),
@@ -75,10 +80,13 @@ app.conf.update(
             'options': {'queue': 'dialogue_crawler', 'routing_key': 'dialogue_info'}
         },
     },
+
     CELERY_QUEUES=(
         Queue('login_queue', exchange=Exchange('login_queue', type='direct'), routing_key='for_login'),
 
         Queue('user_crawler', exchange=Exchange('user_crawler', type='direct'), routing_key='for_user_info'),
+        Queue('relation_crawler', exchange=Exchange('relation_crawler', type='direct'),
+              routing_key='for_relation_info'),
         Queue('search_crawler', exchange=Exchange('search_crawler', type='direct'), routing_key='for_search_info'),
         Queue('fans_followers', exchange=Exchange('fans_followers', type='direct'), routing_key='for_fans_followers'),
 

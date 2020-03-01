@@ -1,13 +1,14 @@
 import json
 
+from utils.path import get_project_root
 
 
-def load_emoji_map(fn = 'utils/emoji_ios6.json'):
-	json_data = json.load(open(fn, encoding='utf-8'))
-	sb_dict = {}
-	for m in json_data:
-		sb_dict[m['sb'].lower()]=m['utf8']
-	return sb_dict
+def load_emoji_map(fn=(get_project_root() + '/utils/emoji_ios6.json')):
+    json_data = json.load(open(fn, encoding='utf-8'))
+    sb_dict = {}
+    for m in json_data:
+        sb_dict[m['sb'].lower()] = m['utf8']
+    return sb_dict
 
 
 def softband_to_utf8(emoji):
@@ -15,7 +16,7 @@ def softband_to_utf8(emoji):
     if hex_emoji:
         return bytes.fromhex(hex_emoji).decode('utf-8')
     else:
-        return '' 
+        return ''
+
 
 sb_dict = load_emoji_map()
-

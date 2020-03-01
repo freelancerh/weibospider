@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from logger import parser
 from db.models import WeiboPraise
 from decorators import parse_decorator
+from page_get import get_profile
 
 
 @parse_decorator('')
@@ -56,6 +57,7 @@ def get_praise_list(html:str, wb_id:str):
     for praise in praises:
         try:
             user_id = praise.find('img').get('usercard')[3:]
+            get_profile(user_id)
             wb_praise = WeiboPraise(user_id, wb_id)
         except Exception as e:
             parser.error('解析点赞失败，具体信息是{}'.format(e))

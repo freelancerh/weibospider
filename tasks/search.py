@@ -1,5 +1,6 @@
 from urllib import parse as url_parse
 
+from config.conf import get_search_args
 from logger import crawler
 from .workers import app
 from page_get import get_page
@@ -53,8 +54,9 @@ def search_keyword(keyword, keyword_id):
             else:
                 WbDataOper.add_one(wb_data)
                 # todo: only add seed ids and remove this task
-                app.send_task('tasks.user.crawl_person_infos', args=(wb_data.uid,), queue='user_crawler',
-                              routing_key='for_user_info')
+                if get_search_args().get('crawl_user') == 1:
+                    app.send_task('tasks.user.crawl_person_infos', args=(wb_data.uid,), queue='user_crawler',
+                               routing_key='for_user_info')
 
 @app.task(ignore_result=True)
 def execute_search_task():

@@ -1,21 +1,21 @@
 # coding:utf-8
-time_out: 200                   # timeout for crawling and storing user info
-min_crawl_interal: 10           # min interal of http request
-max_crawl_interal: 20           # max interal of http request
-excp_interal: 5*60              # time for sleeping when crawling raises exceptions
+time_out: ${TIME_OUT, 200}                            # timeout for crawling and storing user info
+min_crawl_interal: ${MIN_CRAWL_INTERAL, 10}           # min interal of http request
+max_crawl_interal: ${MAX_CRAWL_INTERAL, 20}           # max interal of http request
+excp_interal: ${EXCP_INTERAL, 120}                    # time for sleeping when crawling raises exceptions
 
 # TODO set a default value for max_value of crawling
-max_search_page: 50            # max search page for crawling
-max_home_page: 50              # max user home page for crawling
-max_comment_page: 2000         # max comment page for crawling
-max_repost_page: 2000          # max repost page for crawling
-max_dialogue_page: 2000        # max dialogue page for crawling
-max_retries: 5                 # retry times for crawling
+max_search_page: ${MAX_SEARCH_PAGE, 50}               # max search page for crawling
+max_home_page:  ${MAX_HOME_PAGE, 50}                  # max user home page for crawling
+max_comment_page: ${MAX_COMMENT_PAGE, 2000}           # max comment page for crawling
+max_repost_page: ${MAX_REPOST_PAGE, 2000}             # max repost page for crawling
+max_dialogue_page: ${MAX_DIALOGUE_PAGE, 2000}        # max dialogue page for crawling
+max_retries: ${MAX_RETRIES, 5}                        # retry times for crawling
 
 # You should set the args below if you login from uncommon place
 # It's for verification code indentified
-yundama_username: xxxxxx           # account for yundama
-yundama_passwd: xxxxxx             # password for yundama
+yundama_username: ${YUNDAMA_USERNAME} # disneyland    # account for yundama
+yundama_passwd: ${YUNDAMA_PASSWD} # disneyland123.    # password for yundama
 
 # only crawl weibo(bowen) after
 # only affect to home crawler
@@ -28,13 +28,13 @@ samefollow_uid: ''
 # The value of running_mode can be normal or quick.
 # In normal mode, it will be more stable, while in quick mode, the crawling speed will
 # be much faster, and the weibo account almostly will be banned
-running_mode: normal
+running_mode: ${RUNNING_MODE, normal}
 
 # The value of crawling mode can be accurate or normal
 # In normal mode, the spider won't crawl the weibo content of "展开全文" when execute home crawl tasks or search crawl
 # tasks, so the speed will be much quicker.
 # In accurate mode,the spider will crawl the info of "展开全文",which will be slower, but more details will be given.
-crawling_mode: normal
+crawling_mode: ${CRAWLING_MODE, accurate}
 
 
 # the max number of each cookie can be shared
@@ -44,11 +44,11 @@ share_host_count: 5
 cookie_expire_time: 23
 
 # 1 for allow download images, otherwise set it to 0
-images_allow: 1
+images_allow: 0
 
 # the default image path is '${user.home}/weibospider/images'
 # if you want to change another directory for download image, just set the path below
-images_path: ''
+images_path: ${IMAGES_PATH, ''}
 
 # the value can be large or thumbnail
 # in large type, you will download the large image
@@ -56,17 +56,17 @@ images_path: ''
 image_type: large
 
 db:
-    host: 127.0.0.1
-    port: 3306
-    user: root
-    password: 123456
-    db_name: weibo
+    host: ${DB_HOST}
+    port: ${DB_PORT, 3306}
+    user: ${DB_ACCOUNT}
+    password: ${DB_PWD}
+    db_name: ${DB_NAME}
     db_type: mysql
 
 redis:
-    host: 127.0.0.1
-    port: 6379
-    password: ''
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PWD}
     cookies: 1                   # store and fetch cookies
     # store fetched urls and results,so you can decide whether retry to crawl the urls or not
     urls: 2
@@ -92,11 +92,14 @@ redis:
 # warning by email
 email:
     # your email must open smtp & pop3 service
-    server: smtp.sina.com
-    port: 587
-    from: xxxxx@sina.com         #sendingemailaccount
-    password: xxxx               #youremailpasswd
-    to: xxxxxxxx@139.com         #bind 139 email,so your phone will receive the warning message
+    server: ${EMAIL_SERVER, smtp.sina.com}
+    port: ${EMAIL_PORT, 587}
+    from: ${EMAIL_FROM, xxxx@sina.com}
+    password: ${EMAIL_PASSWORD, xxxxx}
+    to: ${EMAIL_TO, xxxx@139.com} #bind 139 email,so your phone will receive the warning message
     subject: Warning Of Weibo Spider
     warning_info: Please find out the reason why the spider stops working
 
+seach:
+    # 1 for crawl user who's owner of the searched weibo,otherwise set it to 0
+    crawl_user:${SEARCH_CRAWL_USER, 0}
