@@ -50,7 +50,7 @@ app.conf.update(
             'options': {'queue': 'user_crawler', 'routing_key': 'for_user_info'}
         },
         'relation_task': {
-            'task': 'tasks.user.execute_relation_task',
+            'task': 'tasks.relation.execute_relation_task',
             'schedule': timedelta(minutes=3),
             'options': {'queue': 'relation_crawler', 'routing_key': 'for_relation_info'}
         },
