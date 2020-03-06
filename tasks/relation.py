@@ -26,5 +26,5 @@ def execute_relation_task():
     seeds = SeedidsOper.get_other_ids()
     if seeds:
         for seed in seeds:
-            app.send_task('tasks.relation.crawl_follower_fans', args=(seed.uid,), queue='user_crawler',
-                          routing_key='for_user_info')
+            app.send_task('tasks.relation.crawl_follower_fans', args=(seed.uid,), queue='relation_crawler',
+                          routing_key='for_relation_info')
